@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import { Route } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 import NavBar from "./NavBar";
 import Home from "./Home";
 import Profile from "./Profile";
 import Auth from "./Auth/Auth";
 import Callback from "./Auth/Callback";
+import Category from "./Admin/Category";
 import "../css/App.css";
 
 class App extends Component {
@@ -23,7 +24,21 @@ class App extends Component {
           exact
           render={props => <Callback auth={this.auth} {...props} />}
         />
-        <Route path="/profile" exact component={Profile} />
+        <Route
+          path="/profile"
+          render={props =>
+            this.auth.isAuthenticated() ? (
+              <Profile auth={this.auth} {...props} />
+            ) : (
+              <Redirect to="/" />
+            )
+          }
+        />
+        <Route
+          path="/category"
+          exact
+          render={props => <Category auth={this.auth} {...props} />}
+        />
       </>
     );
   }

@@ -2,7 +2,8 @@
   "name": "react-auth0",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:3001",
+  "proxy": "http://localhost:3002",
+  "author": "shahid kochak",
   "dependencies": {
     "@types/auth0-js": "^8.11.11",
     "@types/jest": "24.0.11",
@@ -25,9 +26,6 @@
     "typescript": "^3.4.1"
   },
   "scripts": {
-    "start:client": "react-scripts start",
-    "start:server": "node server.js",
-    "start:node": "run-p start:client start:server",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

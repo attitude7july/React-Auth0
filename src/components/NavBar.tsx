@@ -37,6 +37,11 @@ class NavBar extends Component<any, any> {
                   </Link>
                 ) : null}
               </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/category">
+                  Category
+                </Link>
+              </li>
             </ul>
             <div className="form-inline my-2 my-lg-0">
               {this.props.auth.isAuthenticated() ? (
