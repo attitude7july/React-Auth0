@@ -30,14 +30,20 @@ class App extends Component {
             this.auth.isAuthenticated() ? (
               <Profile auth={this.auth} {...props} />
             ) : (
-              <Redirect to="/" />
-            )
+                <Redirect to="/" />
+              )
           }
         />
         <Route
           path="/category"
           exact
-          render={props => <Category auth={this.auth} {...props} />}
+          render={props =>
+            this.auth.isAuthenticated() && this.auth.userHasScopes(["read:categories"]) ? (
+              <Category auth={this.auth} {...props} />
+            ) : (
+                <Redirect to="/" />
+              )
+          }
         />
       </>
     );

@@ -2,7 +2,8 @@ import React, { Component } from "react";
 
 class Category extends Component<any, any> {
   state = {
-    message: "",
+    categories: [],
+    error: ""
   };
   // tslint:disable-next-line:typedef
   componentDidMount() {
@@ -15,12 +16,12 @@ class Category extends Component<any, any> {
         }
         throw new Error("Network response was not Ok.");
       })
-      .then(response => this.setState({ message: response.message }))
-      .catch(error => this.setState({ message: error.message }));
+      .then(response => this.setState({ categories: response.categories }))
+      .catch(error => this.setState({ error: error.message }));
   }
   // tslint:disable-next-line:typedef
   render() {
-    return <div>{this.state.message}</div>;
+    return <div>{this.state.categories.map((category) => { return <p key={category.id}>{category.title}</p> })}</div>;
   }
 }
 export default Category;

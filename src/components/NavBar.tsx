@@ -30,23 +30,25 @@ class NavBar extends Component<any, any> {
                   Home <span className="sr-only">(current)</span>
                 </Link>
               </li>
-              <li className="nav-item">
-                {this.props.auth.isAuthenticated() ? (
-                  <Link className="nav-link" to="/profile">
-                    Profile
-                  </Link>
-                ) : null}
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/category">
-                  Category
-                </Link>
-              </li>
+              {this.props.auth.isAuthenticated() ? (
+                <>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/profile">
+                      Profile
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/category">
+                      Category
+                    </Link>
+                  </li>
+                </>
+              ) : null}
             </ul>
             <div className="form-inline my-2 my-lg-0">
               {this.props.auth.isAuthenticated() ? (
                 <button
-                  className="btn btn-outline-warning my-2 my-sm-0"
+                  className="btn btn-warning"
                   type="button"
                   onClick={this.props.auth.logout}
                 >
@@ -54,7 +56,7 @@ class NavBar extends Component<any, any> {
                 </button>
               ) : (
                 <button
-                  className="btn btn-outline-success my-2 my-sm-0"
+                  className="btn btn-success"
                   onClick={this.props.auth.login}
                   type="button"
                 >
