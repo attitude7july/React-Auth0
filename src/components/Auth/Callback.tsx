@@ -12,7 +12,7 @@ export default class Callback extends Component<any, any> {
   render(): JSX.Element {
     return (
       <>
-        <h1>...loading</h1>
+        <h1>......loading</h1>
       </>
     );
   }
