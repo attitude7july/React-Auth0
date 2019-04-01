@@ -12,6 +12,7 @@ export default class Auth {
       redirectUri: process.env.REACT_APP_AUTH0_CALLBACK_URL,
       responseType: process.env.REACT_APP_AUTH0_RESPONSE_TYPE,
       scope: process.env.REACT_APP_AUTH0_SCOPE,
+      audience: process.env.REACT_APP_AUTH0_AUDIENCE,
     });
   }
   login = () => {
