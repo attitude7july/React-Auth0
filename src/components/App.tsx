@@ -7,7 +7,7 @@ import Auth from "./Auth/Auth";
 import Callback from "./Auth/Callback";
 import Category from "./Admin/Category";
 import "../css/App.css";
-
+import PrivateRoute from "./PrivateRoute";
 class App extends Component {
   auth: Auth;
   constructor(props: any) {
@@ -24,26 +24,17 @@ class App extends Component {
           exact
           render={props => <Callback auth={this.auth} {...props} />}
         />
-        <Route
+        <PrivateRoute
+          component={Profile}
+          auth={this.auth}
           path="/profile"
-          render={props =>
-            this.auth.isAuthenticated() ? (
-              <Profile auth={this.auth} {...props} />
-            ) : (
-                <Redirect to="/" />
-              )
-          }
+          scopes={[]}
         />
-        <Route
+        <PrivateRoute
           path="/category"
-          exact
-          render={props =>
-            this.auth.isAuthenticated() && this.auth.userHasScopes(["read:category"]) ? (
-              <Category auth={this.auth} {...props} />
-            ) : (
-                <Redirect to="/" />
-              )
-          }
+          component={Category}
+          auth={this.auth}
+          scopes={["read:category"]}
         />
       </>
     );

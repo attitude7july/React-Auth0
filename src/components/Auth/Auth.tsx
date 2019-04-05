@@ -1,4 +1,5 @@
 import auth0 from "auth0-js";
+const REDIRECT_ON_LOGIN: string = "redirect_on_login";
 
 export default class Auth {
 
@@ -19,18 +20,25 @@ export default class Auth {
 
   }
   login = () => {
+
+    // set storage for Url Redirects
+    localStorage.setItem(REDIRECT_ON_LOGIN, JSON.stringify(this.history.location));
+
     this.auth0.authorize({ scope: this.requiredScope });
   }
   handleAuthentication = () => {
     this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.setSession(authResult);
-        this.history.push("/");
+        let redirectLocation: string = localStorage.getItem(REDIRECT_ON_LOGIN) === "undefined" ? "/" :
+          JSON.parse(localStorage.getItem(REDIRECT_ON_LOGIN));
+        this.history.push(redirectLocation);
       } else if (err) {
         this.history.push("/home");
         alert(`Error: ${err.error}.Check the console for further details.`);
         console.log(err);
       }
+      localStorage.removeItem(REDIRECT_ON_LOGIN);
     });
   }
   setSession = (authResult: any) => {
