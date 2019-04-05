@@ -38,7 +38,7 @@ class App extends Component {
           path="/category"
           exact
           render={props =>
-            this.auth.isAuthenticated() && this.auth.userHasScopes(["read:categories"]) ? (
+            this.auth.isAuthenticated() && this.auth.userHasScopes(["read:category"]) ? (
               <Category auth={this.auth} {...props} />
             ) : (
                 <Redirect to="/" />

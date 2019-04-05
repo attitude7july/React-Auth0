@@ -5,7 +5,7 @@ export default class Auth {
   history: any;
   auth0: auth0.WebAuth;
   userProfile: any;
-  requiredScope: any = "openid profile email read:categories";
+  requiredScope: any = "openid profile email read:category write:category";
   constructor(history: any) {
     this.history = history;
     this.auth0 = new auth0.WebAuth({
@@ -16,9 +16,10 @@ export default class Auth {
       scope: this.requiredScope,
       audience: process.env.REACT_APP_AUTH0_AUDIENCE,
     });
+
   }
   login = () => {
-    this.auth0.authorize();
+    this.auth0.authorize({ scope: this.requiredScope });
   }
   handleAuthentication = () => {
     this.auth0.parseHash((err, authResult) => {
@@ -89,6 +90,7 @@ export default class Auth {
   }
   // tslint:disable-next-line:typedef
   userHasScopes(scopes: string[]) {
+    console.log("scope", localStorage.getItem("scopes"));
     let grantScopes: string[] = (JSON.parse(localStorage.getItem("scopes")) || "").split(" ");
     let result: boolean = scopes.every(scope => grantScopes.includes(scope));
     console.log(result);

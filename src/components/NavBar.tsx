@@ -55,14 +55,14 @@ class NavBar extends Component<any, any> {
                   Log Out
                 </button>
               ) : (
-                <button
-                  className="btn btn-success"
-                  onClick={this.props.auth.login}
-                  type="button"
-                >
-                  Log In
+                  <button
+                    className="btn btn-success"
+                    onClick={this.props.auth.login}
+                    type="button"
+                  >
+                    Log In
                 </button>
-              )}
+                )}
             </div>
           </div>
         </nav>
