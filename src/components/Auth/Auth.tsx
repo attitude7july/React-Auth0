@@ -47,7 +47,6 @@ export default class Auth {
   }
   setSession = (authResult: any) => {
 
-    console.log(authResult);
     // set the time that the access token will expire
     /*
     let expiresAt: number = authResult.expiresIn * 1000 + new Date().getTime();
@@ -63,6 +62,9 @@ export default class Auth {
     _scopes = authResult.scope || this.requiredScope || "";
     _accessToken = authResult.accessToken;
     _idToken = authResult.idToken;
+    localStorage.setItem("isLoggedIn", "true");
+
+    this.schedulteTokenRenewal();
   }
   isAuthenticated = () => {
     // let expiresAt: number = JSON.parse(
@@ -75,6 +77,7 @@ export default class Auth {
     // localStorage.removeItem("id_token");
     // localStorage.removeItem("expires_at");
     // localStorage.removeItem("scopes");
+    localStorage.removeItem("isLoggedIn");
     _accessToken = null;
     _idToken = null;
     _expiresAt = 0;
@@ -115,5 +118,28 @@ export default class Auth {
     let grantScopes: string[] = (_scopes || "").split(" ");
     let result: boolean = scopes.every(scope => grantScopes.includes(scope));
     return result;
+  }
+  // we need to call this before the app is
+  // displayed so we know if the user is logged in
+  renewToken = (cb): void => {
+    console.log(localStorage.getItem("isLoggedIn"));
+    if (JSON.parse(localStorage.getItem("isLoggedIn")) === null) { return cb(); }
+    console.log("renew token");
+    // checksession specifies audience and scopes
+    this.auth0.checkSession({}, (err, result) => {
+      if (err) {
+        console.log(`Erro: ${err.error} - ${err.description}. `);
+      } else {
+
+        this.setSession(result);
+      }
+      if (cb) { cb(err, result); }
+    });
+  }
+
+  schedulteTokenRenewal = () => {
+    let delay: number = _expiresAt - Date.now();
+    if (delay > 0) { setTimeout(() => this.renewToken(() => console.log("get renewal")), delay); }
+
   }
 }

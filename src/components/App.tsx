@@ -13,11 +13,22 @@ class App extends Component<any, any> {
   constructor(props: any) {
     super(props);
     this.state = {
-      auth: new Auth(props.history)
+      auth: new Auth(props.history),
+      tokenRenewalComplete: false
     };
   }
-  render(): JSX.Element {
+  // tslint:disable-next-line:typedef
+  componentDidMount() {
+    this.state.auth.renewToken(() => {
+      this.setState({ tokenRenewalComplete: true });
+    });
+
+  }
+  // tslint:disable-next-line:typedef
+  render() {
     const { auth } = this.state;
+    // show loading message untile the token renewal check is complete
+    if (!this.state.tokenRenewalComplete) { return "...loading"; }
     return (
       <AuthContext.Provider value={auth}>
         <NavBar {...this.props} auth={auth} />
