@@ -1,6 +1,11 @@
 import auth0 from "auth0-js";
 const REDIRECT_ON_LOGIN: string = "redirect_on_login";
 
+
+let _idToken: string;
+let _accessToken: string;
+let _expiresAt: number;
+let _scopes: string;
 export default class Auth {
 
   history: any;
@@ -44,45 +49,54 @@ export default class Auth {
 
     console.log(authResult);
     // set the time that the access token will expire
+    /*
     let expiresAt: number = authResult.expiresIn * 1000 + new Date().getTime();
     let scope: string = authResult.scope || this.requiredScope || "";
     localStorage.setItem("access_token", authResult.accessToken);
     localStorage.setItem("id_token", authResult.idToken);
     localStorage.setItem("expires_at", JSON.stringify(expiresAt));
     localStorage.setItem("scopes", JSON.stringify(scope));
+    */
+
+    // storing authresult items in memory
+    _expiresAt = authResult.expiresIn * 1000 + new Date().getTime();
+    _scopes = authResult.scope || this.requiredScope || "";
+    _accessToken = authResult.accessToken;
+    _idToken = authResult.idToken;
   }
   isAuthenticated = () => {
-    let expiresAt: number = JSON.parse(
-      localStorage.getItem("expires_at") || "1"
-    );
-    return new Date().getTime() < expiresAt;
+    // let expiresAt: number = JSON.parse(
+    //   localStorage.getItem("expires_at") || "1"
+    // );
+    return new Date().getTime() < _expiresAt;
   }
   logout = () => {
-    localStorage.removeItem("access_token");
-    localStorage.removeItem("id_token");
-    localStorage.removeItem("expires_at");
-    localStorage.removeItem("scopes");
+    // localStorage.removeItem("access_token");
+    // localStorage.removeItem("id_token");
+    // localStorage.removeItem("expires_at");
+    // localStorage.removeItem("scopes");
+    _accessToken = null;
+    _idToken = null;
+    _expiresAt = 0;
+    _scopes = null;
     this.userProfile = null;
     this.auth0.logout({
       clientID: process.env.REACT_APP_AUTH0_CLIENT_ID,
       returnTo: process.env.REACT_APP_AUTH0_RETURN_URL,
     });
   }
-  getAccessToken = () => {
+  getAccessToken = (): string => {
     // tslint:disable-next-line: typedef
-    const accessToken = localStorage.getItem("access_token");
-    if (!accessToken) {
+    // const accessToken = localStorage.getItem("access_token");
+    // if (!accessToken) {
+    //   throw new Error("No access token found");
+    // }
+    // return accessToken;
+
+    if (!_accessToken) {
       throw new Error("No access token found");
     }
-    return accessToken;
-  }
-  getIdToken = () => {
-    // tslint:disable-next-line: typedef
-    const idToken = localStorage.getItem("id_token");
-    if (!idToken) {
-      throw new Error("No id token found");
-    }
-    return idToken;
+    return _accessToken;
   }
   getProfile = (cb: any) => {
     if (this.userProfile) {
@@ -97,10 +111,9 @@ export default class Auth {
   }
   // tslint:disable-next-line:typedef
   userHasScopes(scopes: string[]) {
-    console.log("scope", localStorage.getItem("scopes"));
-    let grantScopes: string[] = (JSON.parse(localStorage.getItem("scopes")) || "").split(" ");
+    // let grantScopes: string[] = (JSON.parse(localStorage.getItem("scopes")) || "").split(" ");
+    let grantScopes: string[] = (_scopes || "").split(" ");
     let result: boolean = scopes.every(scope => grantScopes.includes(scope));
-    console.log(result);
     return result;
   }
 }
