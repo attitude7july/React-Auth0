@@ -17,7 +17,6 @@ export default class Auth {
       scope: this.requiredScope,
       audience: process.env.REACT_APP_AUTH0_AUDIENCE,
     });
-
   }
   login = () => {
 

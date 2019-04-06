@@ -5,7 +5,7 @@
   "proxy": "http://localhost:3002",
   "author": "shahid kochak",
   "dependencies": {
-    "@types/auth0-js": "^8.11.11",
+    "@types/auth0-js": "^8.11.12",
     "@types/jest": "24.0.11",
     "@types/node": "11.11.7",
     "@types/prop-types": "^15.7.0",
@@ -24,7 +24,7 @@
     "react-dom": "^16.8.5",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.8",
-    "tslint": "^5.14.0",
+    "tslint": "^5.15.0",
     "typescript": "^3.4.1"
   },
   "scripts": {
