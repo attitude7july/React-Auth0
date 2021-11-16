@@ -13,7 +13,7 @@
     "@types/react-dom": "16.8.3",
     "auth0-js": "^9.8.0",
     "auth0-lock": "^11.10.0",
-    "axios": "^0.18.0",
+    "axios": "^0.21.2",
     "express": "^4.16.4",
     "express-jwt": "^5.3.1",
     "express-jwt-authz": "^1.0.0",
